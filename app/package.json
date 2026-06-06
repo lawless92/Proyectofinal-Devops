@@ -1,0 +1,16 @@
+{
+  "name": "node-k8s-app",
+  "version": "1.0.0",
+  "description": "App para proyecto DevOps con K8s y Monitoreo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.7.0",
+    "@opentelemetry/sdk-node": "^0.218.0",
+    "express": "^4.22.2",
+    "prom-client": "^15.0.0"
+  }
+}
