@@ -22,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: user/my-app:${{ github.sha }}
+          tags: lawless92/devopsapp:${{ github.sha }}
 
       - name: Update K8s context
         uses: azure/k8s-set-context@v3
