@@ -51,8 +51,8 @@ securityContext: {}
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
+  # Cambiado a LoadBalancer para exponer la aplicación a internet a través de un balanceador de carga de Azure.
+  type: LoadBalancer
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
   targetPort: 3000 # <--- Añadido: El puerto interno del contenedor al que el servicio debe dirigir el tráfico
