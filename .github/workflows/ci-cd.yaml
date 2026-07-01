@@ -18,6 +18,10 @@ jobs:
         with:
           fetch-depth: 0 # Required for tag-based versioning if you use it
 
+      - name: Set short SHA
+        id: vars
+        run: echo "GITHUB_SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Log in to Azure
         uses: azure/login@v2
         with:
@@ -43,7 +47,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.ACR_LOGIN_SERVER }}/my-node-app:${{ github.sha_short }}
+          tags: ${{ env.ACR_LOGIN_SERVER }}/my-node-app:${{ env.GITHUB_SHA_SHORT }}
 
       - name: Set up AKS context
         uses: azure/aks-set-context@v4
@@ -55,6 +59,6 @@ jobs:
         run: |
           helm upgrade --install node-app ./app-chart \
             --set image.repository=${{ env.ACR_LOGIN_SERVER }}/my-node-app \
-            --set image.tag=${{ github.sha_short }} \
+            --set image.tag=${{ env.GITHUB_SHA_SHORT }} \
             --namespace default \
             --wait
