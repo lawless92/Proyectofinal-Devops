@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Required for tag-based versioning if you use it
 
       - name: Set short SHA
         id: vars

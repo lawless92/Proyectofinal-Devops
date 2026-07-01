@@ -94,7 +94,9 @@ app.get('/metrics', async (req, res) => {
   res.end(await client.register.metrics());
 });
 
-app.listen(port, () => {
-  console.log(`App escuchando en http://localhost:${port}`);
+const HOST = '0.0.0.0';
+
+app.listen(port, HOST, () => {
+  console.log(`App escuchando en http://${HOST}:${port}`);
   console.log(`Métricas disponibles en http://localhost:${port}/metrics`);
 });
