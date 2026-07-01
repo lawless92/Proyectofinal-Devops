@@ -18,8 +18,8 @@ RUN apk update && apk upgrade --no-cache && \
 USER appuser
 
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/index.js ./index.js
-COPY --from=builder /app/package.json ./
+COPY --from=builder --chown=appuser:appgroup /app/index.js ./
+COPY --from=builder --chown=appuser:appgroup /app/package.json ./package.json
 
 EXPOSE 3000
 CMD ["node", "index.js"]
