@@ -55,10 +55,20 @@ jobs:
           resource-group: ${{ env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{ env.CLUSTER_NAME }}
 
+      - name: Create or update image pull secret
+        run: |
+          kubectl create secret docker-registry acr-secret \
+            --namespace default \
+            --docker-server=${{ env.ACR_LOGIN_SERVER }} \
+            --docker-username=${{ secrets.ACR_USERNAME }} \
+            --docker-password=${{ secrets.ACR_PASSWORD }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Deploy to AKS with Helm
         run: |
           helm upgrade --install node-app ./app-chart \
             --set image.repository=${{ env.ACR_LOGIN_SERVER }}/my-node-app \
             --set image.tag=${{ env.GITHUB_SHA_SHORT }} \
+            --set imagePullSecrets[0].name=acr-secret \
             --namespace default \
             --wait
