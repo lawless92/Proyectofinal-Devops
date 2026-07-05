@@ -1,0 +1,30 @@
+ApiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Grafana
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Grafana
+  template:
+    metadata:
+      labels:
+        app: Grafana
+  container:
+    name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - containerPort: 5000
+    env:
+      - name: GF_SECURITY_ADMIN_USER
+        valueFrom:
+          secretKeyRef:
+            name: grafana-secrets
+            key: admin-user
+      - name: GF_SECURITY_ADMIN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: grafana-secrets
+            key: admin-password

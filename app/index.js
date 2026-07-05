@@ -1,6 +1,30 @@
 const express = require('express');
 const client = require('prom-client');
 
+// --- OpenTelemetry Instrumentation ---
+const { NodeSDK } = require('@opentelemetry/sdk-node');
+const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
+
+function createTraceExporter() {
+  // Si existe la cadena de conexión de Application Insights, usamos el exportador de Azure.
+  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
+    const { AzureMonitorTraceExporter } = require('@azure/monitor-opentelemetry-exporter');
+    return new AzureMonitorTraceExporter();
+  }
+  // De lo contrario, usamos el exportador OTLP genérico (para Jaeger, etc.).
+  const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
+  return new OTLPTraceExporter(); // El endpoint se configura con OTEL_EXPORTER_OTLP_ENDPOINT
+}
+
+const sdk = new NodeSDK({
+  traceExporter: createTraceExporter(),
+  instrumentations: [new HttpInstrumentation(), new ExpressInstrumentation()],
+});
+
+sdk.start();
+// --- End OpenTelemetry Instrumentation ---
+
 const app = express();
 const port = process.env.PORT || 3000;
 

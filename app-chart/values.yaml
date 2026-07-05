@@ -61,32 +61,41 @@ securityContext: {}
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # Cambiado a LoadBalancer para exponer la aplicación a internet a través de un balanceador de carga de Azure.
+  # Se cambia a LoadBalancer para exponer la aplicación directamente a través de una IP pública de Azure.
   type: LoadBalancer
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  annotations:
+    # Anotaciones para que Prometheus descubra este servicio y recolecte métricas.
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "3000"
   port: 80
-  targetPort: 3000 # <--- Añadido: El puerto interno del contenedor al que el servicio debe dirigir el tráfico
-
-# Define el puerto en el que la aplicación escucha dentro del contenedor
-containerPort: 3000 # <--- Añadido: Puerto de la aplicación Node.js
+  targetPort: 3000
 
 # Variables de entorno para el contenedor de la aplicación
-env: # <--- Añadido: Variables de entorno de Docker Compose
-  - name: NODE_ENV
-    value: development
-  # Puedes añadir más variables de entorno aquí si las necesitas
-  # - name: OTRO_VAR
-  #   value: otro_valor
+env:
+  # OTEL_EXPORTER_OTLP_ENDPOINT: (Para pilas auto-alojadas como Jaeger)
+  # Define la dirección del servicio del colector de OpenTelemetry.
+  # Este valor debe ser la dirección del servicio de Kubernetes del colector, por ejemplo:
+  # "http://my-otel-collector.observability.svc.cluster.local:4317"
+  OTEL_EXPORTER_OTLP_ENDPOINT: ""
+
+  # APPLICATIONINSIGHTS_CONNECTION_STRING: (Para la pila nativa de Azure Monitor)
+  # Pega aquí la cadena de conexión de tu recurso de Application Insights.
+  APPLICATIONINSIGHTS_CONNECTION_STRING: ""
+  # OTEL_SERVICE_NAME: Nombre del servicio que aparecerá en las herramientas de observabilidad.
+  OTEL_SERVICE_NAME: "node-app"
+
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false
-  className: ""
+  className: "nginx" # Asegúrate de que coincida con la clase de tu Ingress Controller (ej. nginx, traefik)
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: app.example.com
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -133,17 +142,13 @@ httpRoute:
   #     - name: version
   #       value: v2
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
