@@ -1,30 +1,66 @@
-ApiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Grafana
+  name: grafana
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: Grafana
+      app: grafana
   template:
     metadata:
       labels:
-        app: Grafana
-  container:
-    name: grafana
-    image: grafana/grafana:latest
-    ports:
-      - containerPort: 5000
-    env:
-      - name: GF_SECURITY_ADMIN_USER
-        valueFrom:
-          secretKeyRef:
-            name: grafana-secrets
-            key: admin-user
-      - name: GF_SECURITY_ADMIN_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: grafana-secrets
-            key: admin-password
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:latest
+        ports:
+          - containerPort: 3000 # El puerto por defecto de Grafana es 3000
+        esources:
+        limits:
+          cpu: 200m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        env:
+          - name: GF_SECURITY_ADMIN_USER
+            valueFrom:
+              secretKeyRef:
+                name: grafana-secrets
+                key: admin-user
+          - name: GF_SECURITY_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: grafana-secrets
+                key: admin-password
+      r
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: default
+spec:
+  type: LoadBalancer # Expondrá Grafana con una IP pública
+  selector:
+    app: grafana
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-secrets
+  namespace: default
+type: Opaque
+data:
+  # Los valores deben estar codificados en base64.
+  # 'admin' en base64 es 'YWRtaW4='
+  admin-user: "YWRtaW4="
+  # 'tu-contraseña-segura' en base64 es 'dHUtY29udHJhc2XDsWEtc2VndXJh' (¡cámbiala!)
+  admin-password: "dHUtY29udHJhc2XDsWEtc2VndXJh"
