@@ -65,13 +65,13 @@ service:
   # Cambiar a LoadBalancer solo si se quiere exponer la app directamente sin Ingress.
   type: ClusterIP
   port: 80
-  targetPort: 3000
+  targetPort: 5000
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   annotations:
     # Anotaciones para que Prometheus descubra este servicio y recolecte métricas.
     prometheus.io/scrape: "true"
     prometheus.io/path: "/metrics"
-    prometheus.io/port: "3000"
+    prometheus.io/port: "5000"
 
 # Variables de entorno para el contenedor de la aplicación
 env:

@@ -21,5 +21,5 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder --chown=appuser:appgroup /app/index.js ./
 COPY --from=builder --chown=appuser:appgroup /app/package.json ./package.json
 
-EXPOSE 3000
+EXPOSE 5000
 CMD ["node", "index.js"]
