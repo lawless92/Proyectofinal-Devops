@@ -44,7 +44,7 @@ metadata:
   name: grafana-service
   namespace: default
 spec:
-  type: LoadBalancer # Expondrá Grafana con una IP pública
+  type: ClusterIP
   selector:
     app: grafana
   ports:

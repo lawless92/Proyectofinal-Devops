@@ -61,16 +61,17 @@ securityContext: {}
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # Se cambia a LoadBalancer para exponer la aplicación directamente a través de una IP pública de Azure.
-  type: LoadBalancer
+  # El tipo de servicio. ClusterIP es el adecuado cuando se usa un Ingress Controller.
+  # Cambiar a LoadBalancer solo si se quiere exponer la app directamente sin Ingress.
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   annotations:
     # Anotaciones para que Prometheus descubra este servicio y recolecte métricas.
     prometheus.io/scrape: "true"
     prometheus.io/path: "/metrics"
     prometheus.io/port: "3000"
-  port: 80
-  targetPort: 3000
 
 # Variables de entorno para el contenedor de la aplicación
 env:
@@ -89,13 +90,13 @@ env:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: false
+  enabled: true
   className: "nginx" # Asegúrate de que coincida con la clase de tu Ingress Controller (ej. nginx, traefik)
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: app.example.com
+    - host: app.52.137.30.94.nip.io
       paths:
         - path: /
           pathType: ImplementationSpecific
