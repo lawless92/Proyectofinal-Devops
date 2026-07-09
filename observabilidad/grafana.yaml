@@ -56,13 +56,8 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: default
-  annotations:
-    # Asegúrate de que esta anotación coincida con la clase de tu Ingress Controller.
-    # Si usas NGINX Ingress Controller, esta es la correcta.
-    kubernetes.io/ingress.class: nginx
-    # Puedes añadir otras anotaciones aquí, por ejemplo para TLS con cert-manager
-    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  ingressClassName: nginx
   rules:
   - host: grafana.52.137.30.94.nip.io
     http:
