@@ -56,7 +56,9 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: default
-spec:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec: 
   ingressClassName: nginx
   rules:
   - host: grafana.52.137.30.94.nip.io
