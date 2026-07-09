@@ -61,9 +61,9 @@ securityContext: {}
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # El tipo de servicio. ClusterIP es el adecuado cuando se usa un Ingress Controller.
-  # Cambiar a LoadBalancer solo si se quiere exponer la app directamente sin Ingress.
   type: ClusterIP
+  selector:
+    app: node-app
   port: 80
   targetPort: 5000
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
