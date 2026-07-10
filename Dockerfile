@@ -1,15 +1,15 @@
 # Stage 1: Build
-FROM node:24-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 #actualizar e instalar dependencias
 RUN apk update && apk upgrade --no-cache
 COPY app/package*.json ./
 RUN npm install
-COPY app/ .
+COPY app/index.js ./
 
 # Stage 2: Production
-FROM node:24-alpine
+FROM node:20-alpine
 WORKDIR /app
 
 # Crear usuario no root por seguridad
@@ -19,7 +19,7 @@ USER appuser
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder --chown=appuser:appgroup /app/index.js ./
-COPY --from=builder --chown=appuser:appgroup /app/package.json ./package.json
+COPY --from=builder --chown=appuser:appgroup /app/package*.json ./
 
 EXPOSE 5000
 CMD ["node", "index.js"]
