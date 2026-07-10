@@ -19,12 +19,12 @@ spec:
         ports:
           - containerPort: 3000 # El puerto por defecto de Grafana es 3000
         resources:
-        limits:
-          cpu: 200m
-          memory: 256Mi
-        requests:
-          cpu: 100m
-          memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
         env:
           - name: GF_SECURITY_ADMIN_USER
             valueFrom:
@@ -56,8 +56,6 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec: 
   ingressClassName: nginx
   rules:
