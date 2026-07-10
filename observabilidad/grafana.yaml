@@ -71,16 +71,3 @@ spec:
             name: grafana-service
             port:
               number: 80
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: grafana-secrets
-  namespace: default
-type: Opaque
-data:
-  # Los valores deben estar codificados en base64.
-  # 'admin' en base64 es 'YWRtaW4='
-  admin-user: "YWRtaW4="
-  # 'tu-contraseña-segura' en base64 es 'dHUtY29udHJhc2XDsWEtc2VndXJh' (¡cámbiala!)
-  admin-password: "dHUtY29udHJhc2XDsWEtc2VndXJh"
