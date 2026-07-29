@@ -57,15 +57,13 @@ metadata:
   name: grafana-ingress
   namespace: default
 spec: 
-  ingressClassName: nginx
-  rules:
-  - host: grafana.52.137.30.94.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: grafana-service
-            port:
-              number: 80
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`grafana.local`)
+      priority: 10
+      services:
+        - name: grafana-service
+          port: 80
+          scheme: http
