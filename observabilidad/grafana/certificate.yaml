@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-cert
+  namespace: default
+spec:
+  secretName: kibana-tls-secret # Debe coincidir con el secretName del Ingress
+  dnsNames:
+    - grafana.local
+  #clusterIssuerRef se utiliza para referenciar un ClusterIssuer en lugar de un Issuer específico del namespace
+  issuerRef:
+    name: letsencrypt-http 
+    kind: ClusterIssuer
+    group: cert-manager.io
