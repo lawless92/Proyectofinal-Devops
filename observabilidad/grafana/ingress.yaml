@@ -1,20 +1,19 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: grafana-ingress
+  name: grafana-ingressroute # Es buena práctica que el nombre refleje el tipo de recurso
   namespace: default
-spec: 
+spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
       match: Host(`grafana.local`)
-      priority: 10
       services:
         - name: grafana-service
+          # El puerto debe coincidir con el 'port' del Service de Grafana
           port: 80
-          scheme: http
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: grafana.local
+  tls:
+    # indicamos a Traefik que use el secreto que 'cert-manager' ha creado.
+    # El nombre debe coincidir con el 'secretName' del recurso Certificate.
+    secretName: grafana-tls-secret
