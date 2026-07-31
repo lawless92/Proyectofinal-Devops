@@ -5,16 +5,15 @@ metadata:
   namespace: default
 spec:
   entryPoints:
-    - web
+    - websecure
   routes:
     - kind: Rule
       match: Host(`grafana.local`)
       services:
         - name: grafana-service
-          # El puerto debe coincidir con el 'port' del Service de Grafana
           port: 80
           scheme: http
   tls:
-    # indicamos a Traefik que use el secreto que 'cert-manager' ha creado.
+    # Indica a Traefik que use el secreto que 'cert-manager' creará.
     # El nombre debe coincidir con el 'secretName' del recurso Certificate.
     secretName: grafana-tls-secret
