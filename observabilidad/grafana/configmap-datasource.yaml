@@ -12,3 +12,8 @@ data:
         url: ${PROMETHEUS_URL} # La URL se sustituirá por la variable de entorno
         access: proxy
         isDefault: true
+      - name: Loki
+        type: loki
+        url: http://loki-service:3100
+        access: proxy
+        isDefault: false
