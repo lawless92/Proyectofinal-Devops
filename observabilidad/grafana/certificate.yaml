@@ -9,6 +9,6 @@ spec:
     - grafana.local.com
   #clusterIssuerRef se utiliza para referenciar un ClusterIssuer en lugar de un Issuer específico del namespace
   issuerRef:
-    name: letsencrypt-http
+    name: selfsigned
     kind: ClusterIssuer
     group: cert-manager.io
