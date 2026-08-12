@@ -17,18 +17,19 @@ spec:
       - name: grafana
         image: grafana/grafana:latest
         ports:
-          - containerPort: 3000 # El puerto por defecto de Grafana es 3000
+          - name: http-grafana
+            containerPort: 3000 # El puerto por defecto de Grafana es 3000
         readinessProbe:
           httpGet:
             path: /api/health
-            port: 3000
-          initialDelaySeconds: 10
+            port: http-grafana
+          initialDelaySeconds: 30 # Aumentamos el tiempo de espera inicial
           periodSeconds: 5
           timeoutSeconds: 2
         livenessProbe:
           httpGet:
             path: /api/health
-            port: 3000
+            port: http-grafana
           initialDelaySeconds: 30
           periodSeconds: 10
         resources:
