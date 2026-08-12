@@ -11,7 +11,7 @@ spec:
       match: Host(`grafana.local.com`)
       services:
         - name: grafana-service
-          port: 443
+          port: 3000
           scheme: http
   tls:
     # Indica a Traefik que use el secreto que 'cert-manager' creará.

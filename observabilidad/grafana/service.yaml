@@ -8,6 +8,6 @@ spec:
   selector:
     app: grafana
   ports:
-  - port: 443
+  - port: 3000
     targetPort: 3000
     protocol: TCP
