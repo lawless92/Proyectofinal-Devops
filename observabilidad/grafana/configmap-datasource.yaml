@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources-configmap
+  namespace: default
+data:
+  prometheus-datasource.yaml: |-
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: ${PROMETHEUS_URL} # La URL se sustituirá por la variable de entorno
+        access: proxy
+        isDefault: true
