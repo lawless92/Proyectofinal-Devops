@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Namespace donde se desplegará la aplicación.
+namespace: Node-app
+
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
@@ -91,7 +94,7 @@ env:
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: true
-  className: "nginx" # Asegúrate de que coincida con la clase de tu Ingress Controller (ej. nginx, traefik)
+  className: "traefik" # Asegúrate de que coincida con la clase de tu Ingress Controller (ej. nginx, traefik)
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
