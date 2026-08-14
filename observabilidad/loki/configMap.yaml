@@ -29,3 +29,6 @@ data:
         shared_store: filesystem
       filesystem:
         directory: /loki/chunks 
+    compactor:
+      working_directory: /loki/compactor
+      shared_store: filesystem
