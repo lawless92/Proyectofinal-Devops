@@ -12,6 +12,9 @@ data:
       lifecycler:
         address: 127.0.0.1
         ring: {kvstore: {store: inmemory}, replication_factor: 1}
+      wal:
+        enabled: true
+        dir: /loki/wal
     schema_config:
       configs:
       - from: 2020-10-24
@@ -25,4 +28,4 @@ data:
         cache_location: /loki/boltdb-shipper-cache
         shared_store: filesystem
       filesystem:
-        directory: /loki/chunks
+        directory: /loki/chunks 
