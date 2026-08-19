@@ -33,7 +33,7 @@ jobs:
          context: .
          file: ./Dockerfile
          push: true
-         tags: ${{ vars.DOCKERHUB_USERNAME }}/devopsapp:${{ env.GITHUB_SHA_SHORT }}
+         tags: ${{ vars.DOCKERHUB_USERNAME }}/devopsapp:lastest
 
       #- name: Log in to Azure
       #  uses: azure/login@v2
