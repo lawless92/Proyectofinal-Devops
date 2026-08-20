@@ -5,7 +5,7 @@ metadata:
   name: {{ include "node-app.fullname"  . }}
   labels:
     {{- include "node-app.labels"  . | nindent    4 }}
-  {{- i f .Values.ingressRoute.annotations }}
+  {{- if .Values.ingressRoute.annotations }}
   annotations:
     {{- toYaml .Values.ingressRoute.annotations | nindent 4 }}
   {{- end }}
