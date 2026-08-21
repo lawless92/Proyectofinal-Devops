@@ -94,6 +94,7 @@ env:
 
 ingressRoute:
   enabled: true
+  namespace: node-app
   annotations: {}
   entryPoints:
     - web
