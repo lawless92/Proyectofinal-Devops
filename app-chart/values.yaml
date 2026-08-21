@@ -99,7 +99,7 @@ ingressRoute:
   entryPoints:
     - web
     - websecure
-  match: Host(`app.local`) && PathPrefix(`/`)
+  match: Host(`app.local.com`) && PathPrefix(`/`)
   services:
     - name: app-node-app
       scheme: http
