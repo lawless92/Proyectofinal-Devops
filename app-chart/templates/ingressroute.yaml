@@ -3,6 +3,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "node-app.fullname"  . }}
+  namespace: {{ .Values.ingressRoute.namespace | default .Values.namespace | default .Release.Namespace }}
   labels:
     {{- include "node-app.labels"  . | nindent    4 }}
   {{- if .Values.ingressRoute.annotations }}
