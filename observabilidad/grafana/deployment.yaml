@@ -19,21 +19,21 @@ spec:
         ports:
           - name: http-grafana
             containerPort: 3000
-        startupProbe:
-          httpGet:
-            path: /api/health
-            port: 3000
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 60
-        #readinessProbe:
+        #startupProbe:
         #  httpGet:
         #    path: /api/health
         #    port: 3000
-        #  initialDelaySeconds: 90
+        #  initialDelaySeconds: 60
         #  periodSeconds: 10
-        #  timeoutSeconds: 5
-        #  failureThreshold: 6
+        #  failureThreshold: 60
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
         #livenessProbe:
         #  httpGet:
         #    path: /api/health
