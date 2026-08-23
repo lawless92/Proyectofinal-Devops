@@ -17,30 +17,30 @@ spec:
       - name: grafana
         image: grafana/grafana:latest
         ports:
-          - name: http-grafana
+          - name: grafana-http
             containerPort: 3000
-        #startupProbe:
-        #  httpGet:
-        #    path: /api/health
-        #    port: 3000
-        #  initialDelaySeconds: 60
-        #  periodSeconds: 10
-        #  failureThreshold: 60
+        startupProbe:
+          httpGet:
+            path: /livez
+            port: grafana-http
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 60
         readinessProbe:
           httpGet:
             path: /api/health
-            port: 3000
+            port: grafana-http
           initialDelaySeconds: 90
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
-        #livenessProbe:
-        #  httpGet:
-        #    path: /api/health
-        #    port: 3000
-        #  initialDelaySeconds: 240
-        #  periodSeconds: 20
-        #  timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: grafana-http
+          initialDelaySeconds: 240
+          periodSeconds: 20
+          timeoutSeconds: 5
         resources:
           limits:
             cpu: 200m
