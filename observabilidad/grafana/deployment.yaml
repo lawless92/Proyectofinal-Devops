@@ -43,11 +43,11 @@ spec:
           timeoutSeconds: 5
         resources:
           limits:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 512m
+            memory: 512Mi
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 256m
+            memory: 250Mi
         env:
           - name: GF_SECURITY_ADMIN_USER
             valueFrom:
@@ -69,5 +69,4 @@ spec:
       volumes:
       - name: grafana-datasources
         configMap:
-          # Debe coincidir con el nombre del ConfigMap que creamos.
           name: grafana-datasources-configmap
