@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: otel-collector
+  namespace: default
+  labels:
+    app: otel-collector
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      serviceAccountName: otel-collector
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.79.0
+          args: ["--config=/etc/otel-collector-config/otel-collector-config.yaml"]
+          ports:
+            - containerPort: 4317 # OTLP gRPC
+            - containerPort: 4318 # OTLP HTTP
+          volumeMounts:
+            - name: otel-config
+              mountPath: /etc/otel-collector-config/
+              readOnly: true
+            - name: varlog
+              mountPath: /var/log/containers
+              readOnly: true
+      volumes:
+        - name: otel-config
+          configMap:
+            name: otel-collector-config
+            items:
+              - key: otel-collector-config.yaml
+                path: otel-collector-config.yaml
+        - name: varlog
+          hostPath:
+            path: /var/log/containers
+            type: DirectoryOrCreate
