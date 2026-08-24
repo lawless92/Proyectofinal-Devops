@@ -66,7 +66,12 @@ spec:
         - name: grafana-datasources
           mountPath: /etc/grafana/provisioning/datasources
           readOnly: true
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
       volumes:
       - name: grafana-datasources
         configMap:
           name: grafana-datasources-configmap
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: grafana-pvc

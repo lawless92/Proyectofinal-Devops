@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: default
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      # Scrapea la aplicación Node.js. Ajusta el target si cambia el nombre/namespace del Service.
+      - job_name: 'node-app'
+        metrics_path: /metrics
+        static_configs:
+          - targets: ['node-app.node-app.svc.cluster.local:80']
+
+*** End Patch
