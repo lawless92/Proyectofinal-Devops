@@ -20,4 +20,4 @@ data:
         static_configs:
           - targets: ['node-app.node-app.svc.cluster.local:80']
 
-*** End Patch
+    *** End Patch
