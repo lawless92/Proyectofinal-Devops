@@ -1,43 +1,53 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: otel-collector
-  namespace: default
+  name: otel-agent
   labels:
-    app: otel-collector
+    app: opentelemetry
+    component: otel-agent
 spec:
   selector:
     matchLabels:
-      app: otel-collector
+      app: opentelemetry
+      component: otel-agent
   template:
     metadata:
       labels:
-        app: otel-collector
+        app: opentelemetry
+        component: otel-agent
     spec:
-      serviceAccountName: otel-collector
       containers:
-        - name: otel-collector
-          image: otel/opentelemetry-collector:0.158.0
-          imagePullPolicy: IfNotPresent
-          args: ["--config=/etc/otel-collector-config/otel-collector-config.yaml"]
-          ports:
-            - containerPort: 4317 # OTLP gRPC
-            - containerPort: 4318 # OTLP HTTP
-          volumeMounts:
-            - name: otel-config
-              mountPath: /etc/otel-collector-config/
-              readOnly: true
-            - name: varlog
-              mountPath: /var/log/containers
-              readOnly: true
+      - command:
+          - "/otelcol"
+          - "--config=/conf/otel-agent-config.yaml"
+        image: otel/opentelemetry-collector:latest
+        name: otel-agent
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 55679 # ZPages endpoint.
+        - containerPort: 4317 # Default OpenTelemetry receiver port.
+        - containerPort: 8888  # Metrics.
+        env:
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
+          - name: GOMEMLIMIT
+            value: 400MiB
+        volumeMounts:
+        - name: otel-agent-config-vol
+          mountPath: /conf
       volumes:
-        - name: otel-config
-          configMap:
-            name: otel-collector-config
+        - configMap:
+            name: otel-agent-conf
             items:
-              - key: otel-collector-config.yaml
-                path: otel-collector-config.yaml
-        - name: varlog
-          hostPath:
-            path: /var/log/containers
-            type: DirectoryOrCreate
+              - key: otel-agent-config
+                path: otel-agent-config.yaml
+          name: otel-agent-config-vol
