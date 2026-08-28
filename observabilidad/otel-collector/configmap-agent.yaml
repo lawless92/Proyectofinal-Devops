@@ -5,6 +5,7 @@ metadata:
   labels:
     app: opentelemetry
     component: otel-agent-conf
+  namespace: otel
 data:
   otel-agent-config: |
     receivers:

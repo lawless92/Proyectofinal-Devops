@@ -5,6 +5,7 @@ metadata:
   labels:
     app: opentelemetry
     component: otel-collector
+  namespace: otel  
 spec:
   ports:
   - name: otlp-grpc # Default endpoint for OpenTelemetry gRPC receiver.

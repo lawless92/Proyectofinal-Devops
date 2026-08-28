@@ -5,6 +5,7 @@ metadata:
   labels:
     app: opentelemetry
     component: otel-collector
+  namespace: otel
 spec:
   selector:
     matchLabels:

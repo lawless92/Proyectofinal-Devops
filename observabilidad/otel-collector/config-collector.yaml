@@ -5,6 +5,7 @@ metadata:
   labels:
     app: opentelemetry
     component: otel-collector-conf
+  namespace: otel
 data:
   otel-collector-config: |
     receivers:
