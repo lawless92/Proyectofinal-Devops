@@ -13,8 +13,7 @@ data:
       - job_name: 'prometheus'
         static_configs:
           - targets: ['localhost:9090']
-
-      # Scrapea la aplicación Node.js. Ajusta el target si cambia el nombre/namespace del Service.
+          
       - job_name: 'node-app'
         metrics_path: /metrics
         static_configs:
