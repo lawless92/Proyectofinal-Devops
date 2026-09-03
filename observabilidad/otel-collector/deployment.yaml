@@ -13,7 +13,7 @@ spec:
       component: otel-collector
   minReadySeconds: 5
   progressDeadlineSeconds: 120
-  replicas: 1 #TODO - adjust this to your own requirements
+  replicas: 1 
   template:
     metadata:
       labels:
@@ -34,11 +34,9 @@ spec:
             cpu: 200m
             memory: 400Mi
         ports:
-        - containerPort: 55679 # Default endpoint for ZPages.
         - containerPort: 4317 # Default endpoint for OpenTelemetry receiver.
         - containerPort: 14250 # Default endpoint for Jaeger gRPC receiver.
         - containerPort: 14268 # Default endpoint for Jaeger HTTP receiver.
-        - containerPort: 9411 # Default endpoint for Zipkin receiver.
         - containerPort: 8888  # Default endpoint for querying metrics.
         env:
           - name: MY_POD_IP

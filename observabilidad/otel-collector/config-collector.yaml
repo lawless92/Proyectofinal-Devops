@@ -25,14 +25,16 @@ data:
     extensions:
       zpages: {}
     exporters:
-      otlp_grpc:
-        endpoint: "http://someotlp.target.com:4317" # Replace with a real endpoint.
-        tls:
-          insecure: true
+      otlphttp:
+        endpoint: http:///loki.default.svc.cluster.local/otlp
+   
     service:
-      extensions: [zpages]
       pipelines:
         traces/1:
           receivers: [otlp]
           processors: [memory_limiter]
           exporters: [otlp_grpc]
+        logs:
+          receivers: [...]
+          processors: [...]
+          exporters: [..., otlphttp]
