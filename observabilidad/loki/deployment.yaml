@@ -15,6 +15,12 @@ spec:
       labels:
         app: loki
     spec:
+      # NUEVO: la imagen grafana/loki corre como UID/GID 10001 (no root).
+      # Sin fsGroup, el emptyDir se monta como root:root y Loki no puede
+      # escribir en /loki/wal, /loki/chunks, /loki/compactor -> crashea
+      # al arrancar y el puerto 3100 nunca llega a abrirse.
+      securityContext:
+        fsGroup: 10001
       containers:
         - name: loki
           image: grafana/loki:3.7.1
@@ -39,4 +45,4 @@ spec:
           configMap:
             name: loki-config
         - name: loki-data-volume
-          emptyDir: {} # Para producción, usar  PersistentVolume
+          emptyDir: {} # Para producción, usa un PersistentVolume
