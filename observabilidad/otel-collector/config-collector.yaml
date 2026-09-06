@@ -10,9 +10,9 @@ data:
   otel-collector-config: |
     receivers:
       otlp:
-        protocols:
-          grpc: {}
-          http: {}
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
       filelog:
         include: ["/var/log/containers/*.log"]
         start_at: end
