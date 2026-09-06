@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - command:
-          - "/otelcol"
+          - "/otelcol-contrib"
           - "--config=/conf/otel-agent-config.yaml"
         image: otel/opentelemetry-collector-contrib:latest
         name: otel-agent
