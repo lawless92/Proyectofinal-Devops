@@ -17,6 +17,7 @@ spec:
         app: opentelemetry
         component: otel-agent
     spec:
+      serviceAccountName: otel-agent
       containers:
       - command:
           - "/otelcol-contrib"
@@ -45,6 +46,10 @@ spec:
         volumeMounts:
         - name: otel-agent-config-vol
           mountPath: /conf
+        # --- NUEVO: acceso de solo lectura a los logs del nodo ---
+        - name: varlog
+          mountPath: /var/log
+          readOnly: true
       volumes:
         - configMap:
             name: otel-agent-conf
@@ -52,3 +57,7 @@ spec:
               - key: otel-agent-config
                 path: otel-agent-config.yaml
           name: otel-agent-config-vol
+        # --- NUEVO ---
+        - name: varlog
+          hostPath:
+            path: /var/log

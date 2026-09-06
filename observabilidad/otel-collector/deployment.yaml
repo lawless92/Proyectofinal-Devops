@@ -13,7 +13,7 @@ spec:
       component: otel-collector
   minReadySeconds: 5
   progressDeadlineSeconds: 120
-  replicas: 1 
+  replicas: 1
   template:
     metadata:
       labels:
@@ -22,7 +22,10 @@ spec:
     spec:
       containers:
       - command:
-          #- "/otelcol-contrib"
+          # BUG ORIGINAL: esta línea estaba comentada, por lo que
+          # "--config=..." se interpretaba como el binario a ejecutar
+          # y el pod entraba en CrashLoopBackOff.
+          - "/otelcol-contrib"
           - "--config=/conf/otel-collector-config.yaml"
         image: otel/opentelemetry-collector-contrib:latest
         name: otel-collector
@@ -35,8 +38,7 @@ spec:
             memory: 400Mi
         ports:
         - containerPort: 4317 # Default endpoint for OpenTelemetry receiver.
-        - containerPort: 14250 # Default endpoint for Jaeger gRPC receiver.
-        - containerPort: 14268 # Default endpoint for Jaeger HTTP receiver.
+        - containerPort: 4318 # Default endpoint for OpenTelemetry HTTP receiver.
         - containerPort: 8888  # Default endpoint for querying metrics.
         env:
           - name: MY_POD_IP
