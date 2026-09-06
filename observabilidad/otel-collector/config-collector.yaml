@@ -31,7 +31,7 @@ data:
 
     exporters:
       loki:
-        endpoint: "http://loki.default.svc.cluster.local:3100/loki/api/v1/push"
+        endpoint: "http://loki-service.default.svc.cluster.local:3100/loki/api/v1/push"
         labels:
           job: "otel-collector"
       debug:
