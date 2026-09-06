@@ -34,15 +34,21 @@ data:
           queue_size: 100
         retry_on_failure:
           enabled: true
+          
     processors:
+      # Detect and add resource attributes about the host
+      resourcedetection:
+      detectors: [env, system, docker]
+      timeout: 5s
+
+      # Prevent memory issues
       memory_limiter:
         # 80% of maximum memory up to 2G
         limit_mib: 400
         # 25% of limit up to 2G
         spike_limit_mib: 100
         check_interval: 5s
-    extensions:
-      zpages: {}
+  
       
     service:
       extensions: [zpages]
