@@ -10,41 +10,48 @@ data:
   otel-collector-config: |
     receivers:
       otlp:
-    protocols:
-      http:
-        endpoint: 0.0.0.0:4318
-      filelog:
-        include: ["/var/log/containers/*.log"]
-        start_at: end
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
 
     processors:
+      memory_limiter:
+        limit_mib: 1500
+        spike_limit_mib: 512
+        check_interval: 5s
       batch: {}
       attributes:
         actions:
           - key: cluster
             action: insert
             value: "local"
-      memory_limiter:
-        limit_mib: 1500
-        spike_limit_mib: 512
-        check_interval: 5s
 
     exporters:
-      loki:
-        endpoint: "http://loki-service.default.svc.cluster.local:3100/loki/api/v1/push"
-        labels:
-          job: "otel-collector"
-      debug:
-        logLevel: debug
+      # Loki 3.x tiene ingesta OTLP nativa (endpoint /otlp). Loki mapea
+      # automáticamente los resource attributes de k8s (namespace, pod,
+      # container, node) que ya vienen del k8sattributes del agent a
+      # labels de índice, sin exporter deprecado ni hints manuales.
+      otlphttp/loki:
+        endpoint: "http://loki-service.default.svc.cluster.local:3100/otlp"
+        tls:
+          insecure: true
+      debug: {}
 
     service:
       pipelines:
         logs:
-          receivers: [filelog, otlp]
-          processors: [batch, attributes]
-          exporters: [loki, debug]
+          receivers: [otlp]
+          processors: [memory_limiter, batch, attributes]
+          exporters: [otlphttp/loki, debug]
 
         traces:
           receivers: [otlp]
-          processors: [batch]
+          processors: [memory_limiter, batch]
+          exporters: [debug]
+
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
           exporters: [debug]

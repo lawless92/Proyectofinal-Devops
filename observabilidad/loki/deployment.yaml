@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: loki
-          image: grafana/loki:2.9.2
+          image: grafana/loki:3.7.1
           resources:
             limits:
               cpu: 200m
@@ -39,4 +39,4 @@ spec:
           configMap:
             name: loki-config
         - name: loki-data-volume
-          emptyDir: {} # Para producción, usa un PersistentVolume
+          emptyDir: {} # Para producción, usar  PersistentVolume
