@@ -85,7 +85,7 @@ data:
       extensions: [zpages]
       pipelines:
         traces:
-          receivers: [otlpgrpc]
+          receivers: [otlp]
           processors: [memory_limiter, resourcedetection, k8sattributes, batch]
           exporters: [otlp/gateway]
 
@@ -95,6 +95,6 @@ data:
           exporters: [otlp/gateway]
 
         metrics:
-          receivers: [host_metrics, otlpgrpc]
+          receivers: [host_metrics, otlp]
           processors: [memory_limiter, resourcedetection, batch]
           exporters: [otlp/gateway]
