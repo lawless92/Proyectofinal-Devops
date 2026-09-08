@@ -90,7 +90,7 @@ data:
           exporters: [otlp/gateway]
 
         logs:
-          receivers: [file_log]
+          receivers: [filelog]
           processors: [memory_limiter, k8sattributes, batch]
           exporters: [otlp/gateway]
 
