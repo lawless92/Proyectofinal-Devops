@@ -18,12 +18,19 @@ data:
           store: inmemory
 
     ingester:
+      
+      #chunk settings
+      chunk_idle_period: 30m
+        chunk_target_size: 1572864  # 1.5 MB
+        chunk_encoding: snappy
+        max_chunk_age: 2h
+
+      #wal settings
       wal:
         enabled: true
         dir: /loki/wal
 
-    # Índice moderno (TSDB + schema v13) en vez de boltdb-shipper/v11,
-    # que es el formato legacy de Loki 2.x.
+    # Índice moderno (TSDB + schema v13) en vez de boltdb-shipper/v11
     schema_config:
       configs:
         - from: 2024-01-01

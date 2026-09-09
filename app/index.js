@@ -109,10 +109,12 @@ app.get('/', (req, res) => {
   res.send(html);
 });
 
+// Endpoint de salud
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'UP', timestamp: new Date() });
 });
 
+// Endpoint de métricas para Prometheus
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', client.register.contentType);
   res.end(await client.register.metrics());
