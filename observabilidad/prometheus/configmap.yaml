@@ -19,6 +19,6 @@ data:
       - job_name: 'node-app'
         metrics_path: /metrics
         static_configs:
-          - targets: ['node-app.node-app.svc.cluster.local:5000']
+          - targets: ['node-app:5000']
 
     

@@ -6,6 +6,15 @@ const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 
+// --- prometheus instrumentation ---
+const client = require('@prometheus-io/client');
+
+
+const counter = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+});
+
 function createTraceExporter() {
   // Si existe la cadena de conexión de Application Insights, usamos el exportador de Azure.
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
