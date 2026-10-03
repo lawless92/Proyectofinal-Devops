@@ -11,3 +11,4 @@ resource "azurerm_subnet" "aks" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = var.aks_subnet_address_prefixes
 }
+

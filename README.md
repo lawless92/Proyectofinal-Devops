@@ -29,6 +29,19 @@ Este proyecto consiste en una aplicación Node.js diseñada para demostrar un pi
 - `/app-chart`: Helm Chart para despliegue en Kubernetes.
 - `/cluster-config`: Helm Chart "umbrella" para gestionar la pila de observabilidad y otras configuraciones del clúster (enfoque GitOps).
 
+## 🏗️ Aprovisionamiento con Terraform
+
+Las variables de infraestructura se pueden centralizar en `infra/terraform.tfvars`. Para crear la configuración local a partir del ejemplo:
+
+```bash
+cp infra/terraform.tfvars.example infra/terraform.tfvars
+terraform -chdir=infra init
+terraform -chdir=infra plan
+terraform -chdir=infra apply
+```
+
+`terraform.tfvars` está excluido de Git para que cada entorno pueda tener sus propios valores. No guardes credenciales ni secretos en este archivo; usa variables de entorno `TF_VAR_*` o un gestor de secretos.
+
 ## 💻 Ejecución Local
 
 Para levantar la aplicación en un entorno de desarrollo con Docker Compose:
