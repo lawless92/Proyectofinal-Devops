@@ -8,11 +8,6 @@ const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-expre
 
 
 
-const counter = new client.Counter({
-  name: 'http_requests_total',
-  help: 'Total number of HTTP requests',
-});
-
 function createTraceExporter() {
   // Si existe la cadena de conexión de Application Insights, usamos el exportador de Azure.
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
