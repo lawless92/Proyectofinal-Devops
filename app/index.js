@@ -1,5 +1,5 @@
 const express = require('express');
-const client = require('prom-client');
+
 
 // --- OpenTelemetry Instrumentation ---
 const { NodeSDK } = require('@opentelemetry/sdk-node');
