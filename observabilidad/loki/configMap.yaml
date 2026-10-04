@@ -7,6 +7,9 @@ data:
   loki-config.yaml: |
     auth_enabled: false
 
+    limits_config:
+      volume_enabled: true
+
     server:
       http_listen_port: 3100
 
