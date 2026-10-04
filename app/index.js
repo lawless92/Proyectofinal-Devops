@@ -1,13 +1,11 @@
 const express = require('express');
-
+const client = require('prom-client');
 
 // --- OpenTelemetry Instrumentation ---
 const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 
-// --- prometheus instrumentation ---
-const client = require('@prometheus-io/client');
 
 
 const counter = new client.Counter({
