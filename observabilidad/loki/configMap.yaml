@@ -24,9 +24,9 @@ data:
       
       #chunk settings
       chunk_idle_period: 30m
-        chunk_target_size: 1572864  # 1.5 MB
-        chunk_encoding: snappy
-        max_chunk_age: 2h
+      chunk_target_size: 1572864  # 1.5 MB
+      chunk_encoding: snappy
+      max_chunk_age: 2h
 
       #wal settings
       wal:
