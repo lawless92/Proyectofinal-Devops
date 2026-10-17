@@ -21,4 +21,26 @@ data:
         static_configs:
           - targets: ['app-node-app.node-app.svc.cluster.local:5000']
 
+      - job_name: 'node-exporter'
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - target_label: __address__
+            replacement: '${1}:9100'
+            source_labels: [__address__]
+            regex: '(.+):\d+'
+          - source_labels: [__meta_kubernetes_node_name]
+            target_label: instance
+
+      - job_name: 'cadvisor'
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - target_label: __address__
+            replacement: '${1}:8080'
+            source_labels: [__address__]
+            regex: '(.+):\d+'
+          - source_labels: [__meta_kubernetes_node_name]
+            target_label: instance
+
     
