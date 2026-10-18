@@ -33,6 +33,7 @@ data:
             target_label: instance
 
       - job_name: 'cadvisor'
+        honor_timestamps: false
         kubernetes_sd_configs:
           - role: node
         relabel_configs:
